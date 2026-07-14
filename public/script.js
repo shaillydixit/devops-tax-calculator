@@ -1,5 +1,4 @@
 function calculateTax() {
-  const form = document.getElementById('tax-form');
   const salary = Number(document.getElementById('salary').value);
 
   if (isNaN(salary) || salary < 0) {
@@ -14,9 +13,15 @@ function calculateTax() {
   })
     .then(res => res.json())
     .then(data => {
-      document.getElementById('result').textContent = `Estimated tax: $${data.tax.toFixed(2)}`;
+      document.getElementById('total-income').textContent = `$${data.salary.toFixed(2)}`;
+      document.getElementById('tax-due').textContent = `$${data.tax.toFixed(2)}`;
+      document.getElementById('result-section').style.display = 'block';
+      document.getElementById('result').textContent = `Tax Calculated: $${data.tax.toFixed(2)}`;
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.error(err);
+      alert('Error calculating tax');
+    });
 }
 
 document.getElementById('tax-form').addEventListener('submit', e => {

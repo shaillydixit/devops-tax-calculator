@@ -13,9 +13,21 @@
       <p>Enter your annual income to estimate tax.</p>
       <form id="tax-form">
         <label for="salary">Salary</label>
-        <input id="salary" name="salary" type="number" min="0" step="1000" required />
+        <input id="salary" name="salary" type="number" min="0" step="1000" value="50000" required />
         <button type="submit">Calculate</button>
       </form>
+      
+      <div id="result-section" style="display:none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+        <div class="result-item">
+          <label>Your Total Income:</label>
+          <div class="result-value" id="total-income">$0.00</div>
+        </div>
+        <div class="result-item">
+          <label>Tax Due:</label>
+          <div class="result-value" id="tax-due">$0.00</div>
+        </div>
+      </div>
+      
       <div id="result">Your estimated tax will appear here.</div>
     </div>
     <script src="script.js"></script>
