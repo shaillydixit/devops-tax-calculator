@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tax Calculator</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 40px; background: #f5f7fb; }
+      .card { max-width: 480px; margin: 0 auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+      input { width: 100%; padding: 10px; margin-top: 8px; margin-bottom: 16px; }
+      button { background: #2563eb; color: white; border: 0; padding: 10px 16px; border-radius: 6px; cursor: pointer; }
+      #result { margin-top: 12px; font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Tax Calculator</h1>
+      <p>Enter your annual income to estimate tax.</p>
+      <form id="tax-form">
+        <label for="salary">Salary</label>
+        <input id="salary" name="salary" type="number" min="0" step="1000" required />
+        <button type="submit">Calculate</button>
+      </form>
+      <div id="result">Your estimated tax will appear here.</div>
+    </div>
+
+    <script>
+      const form = document.getElementById('tax-form');
+      const result = document.getElementById('result');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const response = await fetch('/calculate', {
+          method: 'POST',
+          body: new URLSearchParams(formData)
+        });
+        const data = await response.json();
+        result.textContent = `Estimated tax: $${data.tax.toFixed(2)}`;
+      });
+    </script>
+  </body>
+</html>

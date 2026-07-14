@@ -1,0 +1,52 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: tax-calculator-pipeline
+spec:
+  tasks:
+    - name: install-dependencies
+      taskRef:
+        name: npm-install
+    - name: run-tests
+      taskRef:
+        name: npm-test
+      runAfter:
+        - install-dependencies
+    - name: build-image
+      taskRef:
+        name: buildah-build
+      runAfter:
+        - run-tests
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: npm-install
+spec:
+  steps:
+    - name: install
+      image: node:20-alpine
+      script: |
+        npm install
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: npm-test
+spec:
+  steps:
+    - name: test
+      image: node:20-alpine
+      script: |
+        npm test
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: buildah-build
+spec:
+  steps:
+    - name: build
+      image: quay.io/buildah/stable
+      script: |
+        buildah bud -t tax-calculator:latest .
